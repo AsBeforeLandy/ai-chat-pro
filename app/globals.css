@@ -30,21 +30,42 @@
   }
 }
 
-/* ==================== Scrollbar ==================== */
-@layer utilities {
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 5px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 10px;
-  }
-  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #3d3d5c;
-  }
+/* ==================== Scrollbar — Global ==================== */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+
+.dark * {
+  scrollbar-color: #2d2d4a transparent;
+}
+
+/* WebKit (Chrome/Safari/Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #2d2d4a;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #4a4a6a;
 }
 
 /* ==================== Markdown code blocks (hljs) ==================== */
