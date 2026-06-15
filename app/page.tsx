@@ -5,7 +5,7 @@ import Sidebar from "@/components/sidebar/Sidebar";
 import ChatWindow from "@/components/chat/ChatWindow";
 
 export default function Home() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
