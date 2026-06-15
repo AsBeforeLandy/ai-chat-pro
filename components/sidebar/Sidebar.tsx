@@ -25,15 +25,13 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   const handleNewChat = useCallback(() => {
     createSession();
-    onClose();
-  }, [createSession, onClose]);
+  }, [createSession]);
 
   const handleSwitch = useCallback(
     (id: string) => {
       switchSession(id);
-      onClose();
     },
-    [switchSession, onClose],
+    [switchSession],
   );
 
   const handleDelete = useCallback(

@@ -144,7 +144,7 @@ export default function ChatWindow({ onToggleSidebar }: ChatWindowProps) {
         </h2>
         {activeSession && (
           <span className="text-[11px] px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">
-            {activeSession.model || "GPT-5.5"}
+            {activeSession.model || "Demo"}
           </span>
         )}
       </header>
