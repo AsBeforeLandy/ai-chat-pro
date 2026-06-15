@@ -121,4 +121,4 @@ export default memo(function MarkdownRenderer({ content }: MarkdownRendererProps
       </ReactMarkdown>
     </div>
   );
-}
+});
