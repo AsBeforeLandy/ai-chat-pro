@@ -23,9 +23,9 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
   },
 }));
 
-// Initialize on client
+// Read from DOM to stay in sync with the inline script in layout.tsx.
+// This avoids FOUC and double-computation of system preference.
 if (typeof window !== "undefined") {
-  const isDark = getSystemPreference();
-  document.documentElement.classList.toggle("dark", isDark);
+  const isDark = document.documentElement.classList.contains("dark");
   useThemeStore.setState({ isDark });
 }
