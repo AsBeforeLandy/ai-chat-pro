@@ -3,7 +3,7 @@
 import type { Message } from "@/types/chat";
 import MarkdownRenderer from "./MarkdownRenderer";
 import { estimateTokens } from "@/store/chatStore";
-import { useCallback, useState } from "react";
+import { useCallback, useState, memo } from "react";
 
 interface MessageItemProps {
   message: Message;
@@ -12,7 +12,7 @@ interface MessageItemProps {
   isStreaming?: boolean;
 }
 
-export default function MessageItem({
+export default memo(function MessageItem({
   message,
   onEdit,
   onRegenerate,
@@ -171,7 +171,14 @@ export default function MessageItem({
       </div>
     </div>
   );
-}
+}, (prev, next) => {
+  // Only re-render if content, streaming state, or editing state changed
+  return (
+    prev.message.id === next.message.id &&
+    prev.message.content === next.message.content &&
+    prev.isStreaming === next.isStreaming
+  );
+});
 
 // ==================== Icon Components ====================
 

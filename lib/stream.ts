@@ -57,19 +57,27 @@ async function simulateDemoStream(
   const chars = [...fullText];
   const chunkSize = 3;
 
+  // Batch: accumulate ~5 chunks (~15 chars) before flushing to UI,
+  // cutting store updates from ~170 to ~34 for a 500-char response
+  let buffer = "";
+  const FLUSH_INTERVAL = 5;
+
   try {
     for (let i = 0; i < chars.length; i += chunkSize) {
-      // Check abort
       if (signal?.aborted) {
+        if (buffer) callbacks.onChunk(buffer);
         callbacks.onDone();
         return;
       }
 
-      const chunk = chars.slice(i, i + chunkSize).join("");
-      callbacks.onChunk(chunk);
-
-      // Variable delay: 20-35ms per chunk → natural typing feel
+      buffer += chars.slice(i, i + chunkSize).join("");
       await delay(20 + Math.random() * 15);
+
+      // Flush every N chunks
+      if ((i / chunkSize) % FLUSH_INTERVAL === 0 || i + chunkSize >= chars.length) {
+        callbacks.onChunk(buffer);
+        buffer = "";
+      }
     }
 
     callbacks.onDone();

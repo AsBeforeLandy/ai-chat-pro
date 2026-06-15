@@ -2,7 +2,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import rehypeRaw from "rehype-raw";
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, memo } from "react";
 
 interface MarkdownRendererProps {
   content: string;
@@ -39,7 +39,7 @@ function CodeBlock({ language, code }: { language?: string; code: string }) {
   );
 }
 
-export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
+export default memo(function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
     <div className="markdown-body prose prose-sm dark:prose-invert max-w-none">
       <ReactMarkdown
