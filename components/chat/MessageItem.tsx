@@ -53,13 +53,13 @@ export default function MessageItem({
     >
       {/* Avatar */}
       <div
-        className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm ${
+        className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white ${
           isUser
-            ? "bg-gradient-to-br from-amber-400 to-red-500 text-white"
-            : "bg-gradient-to-br from-indigo-500 to-purple-600 text-white"
+            ? "bg-gradient-to-br from-teal-400 to-cyan-500"
+            : "bg-gradient-to-br from-indigo-500 to-purple-600"
         }`}
       >
-        {isUser ? "👤" : "AI"}
+        {isUser ? "U" : "AI"}
       </div>
 
       {/* Content */}
@@ -70,7 +70,7 @@ export default function MessageItem({
             isUser ? "text-right text-gray-500 dark:text-gray-400" : "text-gray-500 dark:text-gray-400"
           }`}
         >
-          {isUser ? "你" : "AI Assistant"}
+          {isUser ? "User" : "AI Assistant"}
         </div>
 
         {/* Message bubble */}
