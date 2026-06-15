@@ -23,14 +23,9 @@ export default function RootLayout({
               (function() {
                 try {
                   var stored = localStorage.getItem('aichat-theme');
-                  var isDark = stored !== null
-                    ? stored === 'dark'
-                    : window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  if (isDark) {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
+                  // Default to dark mode unless user explicitly chose light
+                  var isDark = stored === 'light' ? false : true;
+                  document.documentElement.classList.toggle('dark', isDark);
                 } catch(e) {}
               })();
             `,
