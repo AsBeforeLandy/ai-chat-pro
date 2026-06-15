@@ -115,13 +115,17 @@ export default memo(function MessageItem({
           </div>
         ) : (
           <div className="max-w-full">
-            <div className="text-sm text-gray-900 dark:text-gray-100 leading-relaxed">
-              <MarkdownRenderer content={message.content} />
-            </div>
-
-            {/* Cursor effect while streaming */}
-            {isStreaming && (
-              <span className="inline-block w-0.5 h-4 ml-0.5 bg-indigo-500 animate-blink align-text-bottom" />
+            {isStreaming ? (
+              // Streaming: render as plain text with inline cursor (no markdown re-parse)
+              <div className="text-sm text-gray-900 dark:text-gray-100 leading-relaxed whitespace-pre-wrap">
+                {message.content}
+                <span className="inline-block w-0.5 h-[1em] ml-0.5 bg-indigo-500 animate-blink align-middle" />
+              </div>
+            ) : (
+              // Complete: full markdown rendering
+              <div className="text-sm text-gray-900 dark:text-gray-100 leading-relaxed">
+                <MarkdownRenderer content={message.content} />
+              </div>
             )}
           </div>
         )}
