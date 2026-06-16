@@ -12,7 +12,7 @@ interface MessageItemProps {
   isStreaming?: boolean;
 }
 
-export default memo(function MessageItem({
+const MessageItem = memo(function MessageItem({
   message,
   onEdit,
   onRegenerate,
@@ -183,6 +183,8 @@ export default memo(function MessageItem({
     prev.isStreaming === next.isStreaming
   );
 });
+
+export default MessageItem;
 
 // ==================== Icon Components ====================
 

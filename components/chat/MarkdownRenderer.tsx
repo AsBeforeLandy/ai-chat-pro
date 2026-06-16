@@ -8,15 +8,31 @@ interface MarkdownRendererProps {
   content: string;
 }
 
-function CodeBlock({ language, code }: { language?: string; code: string }) {
+function CodeBlock({ language, children }: { language?: string; children: React.ReactNode }) {
   const canUseDOM = typeof window !== "undefined";
+
+  // Helper function to recursively extract plain text from ReactNode tree
+  const getRawText = (node: React.ReactNode): string => {
+    if (!node) return "";
+    if (typeof node === "string" || typeof node === "number") {
+      return String(node);
+    }
+    if (Array.isArray(node)) {
+      return node.map(getRawText).join("");
+    }
+    if (typeof node === "object" && "props" in node && node.props) {
+      return getRawText(node.props.children);
+    }
+    return "";
+  };
 
   const copyCode = useCallback(() => {
     if (!canUseDOM) return;
-    navigator.clipboard.writeText(code).then(() => {
-      // Visual feedback is handled by the button state
+    const rawText = getRawText(children).replace(/\n$/, "");
+    navigator.clipboard.writeText(rawText).then(() => {
+      // Visual feedback can be added if needed
     });
-  }, [code, canUseDOM]);
+  }, [children, canUseDOM]);
 
   return (
     <div className="my-3 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-[#1e1e2e]">
@@ -32,14 +48,14 @@ function CodeBlock({ language, code }: { language?: string; code: string }) {
       </div>
       <div className="overflow-x-auto">
         <pre className="p-4 m-0 text-sm leading-relaxed">
-          <code className={`language-${language || "text"}`}>{code}</code>
+          <code className={`hljs language-${language || "text"}`}>{children}</code>
         </pre>
       </div>
     </div>
   );
 }
 
-export default memo(function MarkdownRenderer({ content }: MarkdownRendererProps) {
+const MarkdownRenderer = memo(function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
     <div className="markdown-body prose prose-sm dark:prose-invert max-w-none">
       <ReactMarkdown
@@ -63,10 +79,9 @@ export default memo(function MarkdownRenderer({ content }: MarkdownRendererProps
             }
 
             return (
-              <CodeBlock
-                language={match ? match[1] : undefined}
-                code={String(children).replace(/\n$/, "")}
-              />
+              <CodeBlock language={match ? match[1] : undefined}>
+                {children}
+              </CodeBlock>
             );
           },
           // Style links
@@ -122,3 +137,5 @@ export default memo(function MarkdownRenderer({ content }: MarkdownRendererProps
     </div>
   );
 });
+
+export default MarkdownRenderer;

@@ -19,10 +19,8 @@ export interface StreamCallbacks {
 }
 
 // Check at module level — configured via env at build time
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY || "";
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.openai.com/v1";
-const API_MODEL = process.env.NEXT_PUBLIC_API_MODEL || "gpt-4o";
+const USE_REAL_API = process.env.NEXT_PUBLIC_USE_REAL_API === "true";
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "/ai-chat-pro";
 
 /**
  * Main entry point — auto-selects demo or real mode.
@@ -32,7 +30,7 @@ export async function streamChat(
   callbacks: StreamCallbacks,
   signal?: AbortSignal,
 ) {
-  if (!API_KEY) {
+  if (!USE_REAL_API) {
     return simulateDemoStream(messages, callbacks, signal);
   }
   return realApiStream(messages, callbacks, signal);
@@ -109,16 +107,13 @@ async function realApiStream(
   signal?: AbortSignal,
 ) {
   try {
-    const response = await fetch(`${API_BASE_URL}/chat/completions`, {
+    const response = await fetch(`${BASE_PATH}/api/chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${API_KEY}`,
       },
       body: JSON.stringify({
-        model: API_MODEL,
         messages,
-        stream: true,
       }),
       signal,
     });
